@@ -56,7 +56,7 @@ echo.
 if exist "..\main.py" copy /Y "..\main.py" "main.py" >nul
 if exist "upload-keystore.jks" (
     set /p kspass="Keystore şifrenizi girin: "
-    "%FLET_EXE%" build aab -o "apk_ve_aab_ciktilari\aab" --android-signing-key-store upload-keystore.jks --android-signing-key-store-password "%kspass%" --android-signing-key-password "%kspass%" --android-signing-key-alias upload
+    "%FLET_EXE%" build aab -o "apk_ve_aab_ciktilari\aab" --android-signing-key-store "%cd%\upload-keystore.jks" --android-signing-key-store-password "%kspass%" --android-signing-key-password "%kspass%" --android-signing-key-alias upload
 ) else (
     "%FLET_EXE%" build aab -o "apk_ve_aab_ciktilari\aab"
 )

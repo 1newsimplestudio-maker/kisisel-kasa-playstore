@@ -41,15 +41,19 @@ jobs:
 
       - name: Google Play Store Icin Imzali AAB Olustur
         run: |
-          flet build aab --yes --no-rich-output -v \
-            --android-signing-key-store upload-keystore.jks \
+          flet build aab --yes --no-rich-output \
+            --android-signing-key-store "$PWD/upload-keystore.jks" \
             --android-signing-key-store-password kasa123456 \
             --android-signing-key-password kasa123456 \
             --android-signing-key-alias upload
 
       - name: Telefon Kurulumu Icin APK Olustur
         run: |
-          flet build apk --yes --no-rich-output -v
+          flet build apk --yes --no-rich-output \
+            --android-signing-key-store "$PWD/upload-keystore.jks" \
+            --android-signing-key-store-password kasa123456 \
+            --android-signing-key-password kasa123456 \
+            --android-signing-key-alias upload
 
       - name: AAB ve APK Dosyalarini Indirilebilir Paket Yap
         uses: actions/upload-artifact@v4
