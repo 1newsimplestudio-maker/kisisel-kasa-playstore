@@ -1,0 +1,61 @@
+name: Google Play Store (AAB & APK) Paketi Olustur
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Proje Kodlarini Indir
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Java JDK 17 Kur (Keystore Imzalama Icin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Flet Yukle
+        run: |
+          python -m pip install --upgrade pip
+          pip install "flet[all]>=1.0.5"
+
+      - name: Google Play Upload Keystore Olustur
+        run: |
+          keytool -genkey -v \
+            -keystore upload-keystore.jks \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias upload \
+            -storepass kasa123456 \
+            -keypass kasa123456 \
+            -dname "CN=Kisisel Kasa, OU=Mobile, O=KisiselKasa, L=Istanbul, S=Istanbul, C=TR"
+
+      - name: Google Play Store Icin Imzali AAB Olustur
+        run: |
+          flet build aab --yes --no-rich-output -v \
+            --android-signing-key-store upload-keystore.jks \
+            --android-signing-key-store-password kasa123456 \
+            --android-signing-key-password kasa123456 \
+            --android-signing-key-alias upload
+
+      - name: Telefon Kurulumu Icin APK Olustur
+        run: |
+          flet build apk --yes --no-rich-output -v
+
+      - name: AAB ve APK Dosyalarini Indirilebilir Paket Yap
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kisisel-Kasa-GooglePlay-AAB-ve-APK
+          path: |
+            build/aab/**/*
+            build/apk/**/*
+            upload-keystore.jks

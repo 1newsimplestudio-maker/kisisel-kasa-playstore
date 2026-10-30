@@ -1,0 +1,40 @@
+[project]
+name = "kisisel-kasa"
+version = "1.0.0"
+description = "Kişisel Kasa, Aylık Bütçe, Sabit Gider ve Taksit Takip Uygulaması"
+readme = "PLAY_STORE_REHBERI.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Kisisel Kasa", email = "iletisim@kisiselkasa.com" }
+]
+dependencies = [
+    "flet>=1.0.5",
+]
+
+[tool.flet]
+org = "com.kisiselkasa"
+product = "Kişisel Kasa"
+company = "Kişisel Kasa"
+copyright = "Copyright (C) 2026 Kişisel Kasa"
+build_number = 1
+exclude = [
+    "kontrol_paneli.py",
+    "Kontrol_Paneli.bat",
+    "Play_Store_Paket_Olustur.bat",
+    "PLAY_STORE_REHBERI.md",
+    "kasa.db",
+    "*.jks",
+    ".github",
+]
+
+[tool.flet.splash]
+color = "#F1F5F9"
+dark_color = "#0F172A"
+web = false
+ios = true
+android = true
+
+[tool.flet.android]
+adaptive_icon_background = "#0D9488"
+split_per_abi = false
+
